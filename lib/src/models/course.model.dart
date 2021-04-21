@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:mathapp/src/models/lesson.model.dart';
+import 'package:mathapp/src/models/test.model.dart';
 
 CourseModel courseModelFromJson(String str) => CourseModel.fromJson(json.decode(str));
 
@@ -34,12 +35,14 @@ class Course {
         this.id,
         this.name,
         this.lessons,
-        this.icon
+        this.icon,
+        this.tests
     });
 
     String id;
     String name;
     List<Lesson> lessons;
+    List<Test> tests;
     int icon;
     Color color;
 
@@ -52,7 +55,8 @@ class Course {
         id: json["id"],
         name: json["name"],
         icon: int.parse(json["icon"]),
-        lessons: List<Lesson>.from(json['lessons'].map((l) => Lesson.fromJson(l)))
+        lessons: List<Lesson>.from(json['lessons'].map((l) => Lesson.fromJson(l))),
+        tests: List<Test>.from(json["tests"].map((t) => Test.fromJson(t)))
     );
 
     Map<String, dynamic> toJson() => {

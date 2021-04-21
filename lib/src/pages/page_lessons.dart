@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mathapp/src/models/course.model.dart';
 import 'package:mathapp/src/models/lesson.model.dart';
+import 'package:mathapp/src/models/test.model.dart';
 import 'package:mathapp/src/services/course.service.dart';
 import 'package:provider/provider.dart';
 
@@ -79,7 +80,7 @@ class _LessonsPageState extends State<LessonsPage> {
               child: TabBarView(
                 children: [
                   _lessonsList(course),
-                  Center(child: Text('Aquí van los test')),
+                  _testsList(course)
                 ],
               ),
             )
@@ -94,13 +95,24 @@ class _LessonsPageState extends State<LessonsPage> {
       child: ListView.builder(
         itemCount: course.lessons.length,
         itemBuilder: (BuildContext context, int i) {
-          return _lessonCard(context, course.lessons[i], course.color);
+          return _card(context, course.lessons[i], course.color, Icons.notes);
         },
       ),
     );
   }
 
-  Container _lessonCard(BuildContext context, Lesson lesson, Color color) {
+  Container _testsList(Course course) {
+    return Container(
+      child: ListView.builder(
+        itemCount: course.lessons.length,
+        itemBuilder: (BuildContext context, int i) {
+          return _card(context, course.tests[i], course.color, Icons.notes);
+        },
+      ),
+    );
+  }
+
+  Container _card(BuildContext context, dynamic object, Color color, IconData icon) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.only(bottom: 20),
@@ -117,12 +129,14 @@ class _LessonsPageState extends State<LessonsPage> {
         ]
       ),
       child: ListTile(
-        leading: Icon(Icons.notes, size: 40, color: color,),
-        title: Text(lesson.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+        leading: Icon(icon, size: 40, color: color,),
+        title: Text(object is Lesson ? object.title : 'Test', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
         trailing: Icon(Icons.chevron_right),
-        subtitle: Text(lesson.description, overflow: TextOverflow.ellipsis,),
+        subtitle: Text(object is Lesson ? object.description : 'Pon a prueba tus conocimientos', overflow: TextOverflow.ellipsis,),
         onTap: () {
-          Provider.of<CourseService>(context, listen: false).currentLesson = lesson;
+          if (object is Lesson) {
+            Provider.of<CourseService>(context, listen: false).currentLesson = object;
+          }
           Navigator.pushNamed(context, 'showlesson');
         }
       ),

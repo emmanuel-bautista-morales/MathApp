@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:mathapp/appconfig.dart';
 import 'package:mathapp/src/models/course.model.dart';
 import 'package:mathapp/src/models/lesson.model.dart';
+import 'package:mathapp/src/models/test.model.dart';
 
 final path="/api/course/all";
 class CourseService with ChangeNotifier{
@@ -17,6 +18,7 @@ class CourseService with ChangeNotifier{
   List<Course>courses=[];
   Course _currentCourse;
   Lesson _currentLesson;
+  Test _currentTest;
 
   CourseService(){
     getCourses();
@@ -37,6 +39,13 @@ class CourseService with ChangeNotifier{
   }
 
   Lesson get currentLesson => this._currentLesson;
+
+  set currentTest(Test test) {
+    this._currentTest = test;
+    notifyListeners();
+  }
+
+  Test get currentTest => this._currentTest;
 
   getCourses() async {
     final uri=Uri.http(AppConfig.apiHost, path);
