@@ -83,7 +83,7 @@ class _ShowLessonPageState extends State<ShowLessonPage> {
                 Html(
                   data: lesson.content,
                   style: {
-                    'p': Style(fontSize: FontSize.em(1.3), textAlign: TextAlign.justify, lineHeight: LineHeight.number(1.3), color: Color.fromRGBO(0, 0, 0, 0.70)),
+                    'p': Style(fontSize: FontSize.rem(1.1), textAlign: TextAlign.justify, lineHeight: LineHeight.number(1.3), color: Color.fromRGBO(0, 0, 0, 0.70)),
                     'li': Style(fontSize: FontSize.em(1.3), textAlign: TextAlign.justify, lineHeight: LineHeight.number(1.3), color: Color.fromRGBO(0, 0, 0, 0.70)),
                     'h1': Style(textAlign: TextAlign.center),
                     'strong': Style(fontSize: FontSize.large)

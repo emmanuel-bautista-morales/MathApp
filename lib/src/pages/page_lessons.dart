@@ -26,19 +26,12 @@ class _LessonsPageState extends State<LessonsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Lecciones del curso',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
                     SizedBox(height: 10),
                     (courseService.currentCourse.lessons.length == 0)
                     ?
                     Center(child: Text("No se encontraron lecciones para este curso"))
                     :
-                    _lessonsList(screenSize, courseService.currentCourse),
+                    _tabBar(screenSize, courseService.currentCourse)
                   ],
                 ),
               )
@@ -50,9 +43,54 @@ class _LessonsPageState extends State<LessonsPage> {
    );
   }
 
-  Container _lessonsList(Size screenSize, Course course) {
+  Widget _tabBar(Size screenSize, Course course) {
     return Container(
       height: screenSize.height - 300,
+      child: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [ 
+            TabBar(
+              indicatorColor: course.color,
+              tabs: [
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Text('Lecciones',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Text('Pruebas',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                )
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  _lessonsList(course),
+                  Center(child: Text('Aquí van los test')),
+                ],
+              ),
+            )
+          ],
+        )
+      ),
+    );
+  }
+
+  Container _lessonsList(Course course) {
+    return Container(
       child: ListView.builder(
         itemCount: course.lessons.length,
         itemBuilder: (BuildContext context, int i) {
