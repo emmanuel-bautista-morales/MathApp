@@ -4,6 +4,7 @@ import 'package:mathapp/src/pages/page_lessons.dart';
 import 'package:mathapp/src/pages/page_progress.dart';
 import 'package:mathapp/src/pages/page_show_experiment.dart';
 import 'package:mathapp/src/pages/page_show_lesson.dart';
+import 'package:mathapp/src/pages/page_test.dart';
 
 
 Map<String,WidgetBuilder> routes(){
@@ -12,6 +13,7 @@ Map<String,WidgetBuilder> routes(){
    'lessons':(BuildContext context)=>LessonsPage(),
    'showlesson':(BuildContext context)=>ShowLessonPage(),
    'showExperiment':(BuildContext context)=>ShowExperimentPage(),
-   'progress':(BuildContext context)=>ProgressPage()
-  };
+   'progress':(BuildContext context)=>ProgressPage(),
+   'test':(BuildContext context)=>TestPage()
+     };
 }

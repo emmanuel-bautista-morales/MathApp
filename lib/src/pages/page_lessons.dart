@@ -136,8 +136,13 @@ class _LessonsPageState extends State<LessonsPage> {
         onTap: () {
           if (object is Lesson) {
             Provider.of<CourseService>(context, listen: false).currentLesson = object;
-          }
           Navigator.pushNamed(context, 'showlesson');
+          }
+          if(object is Test){
+            Provider.of<CourseService>(context,listen: false).currentTest=object;
+            Navigator.pushNamed(context, 'test');
+            //navegar a la pagina test
+          }
         }
       ),
     );

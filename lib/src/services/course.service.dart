@@ -65,4 +65,8 @@ class CourseService with ChangeNotifier{
     notifyListeners();
   }
 
+  getQuestions(){
+    
+  }
+
 }
