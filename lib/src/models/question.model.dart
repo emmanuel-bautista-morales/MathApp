@@ -5,6 +5,7 @@ class Question {
   String question;
   int testId;
   List<Answer> answers;
+  bool _answered = false;
 
   Question(
     {this.id,
@@ -19,4 +20,10 @@ class Question {
     testId: int.parse(json['test_id']),
     answers: List<Answer>.from(json['answers'].map((a) => Answer.fromJson(a)))
   );
+
+  set answered(bool value) {
+    this._answered = value;
+  }
+
+  bool get answered => this._answered;
 }

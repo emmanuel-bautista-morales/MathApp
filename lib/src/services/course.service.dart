@@ -19,10 +19,13 @@ class CourseService with ChangeNotifier{
   Course _currentCourse;
   Lesson _currentLesson;
   Test _currentTest;
+  bool _error;
 
   CourseService(){
     getCourses();
   }
+
+  bool get error => this._error; 
 
   get isLoading => this._isLoading;
 
@@ -47,7 +50,8 @@ class CourseService with ChangeNotifier{
 
   Test get currentTest => this._currentTest;
 
-  getCourses() async {
+  void getCourses() async {
+    this._isLoading = true;
     final uri=Uri.http(AppConfig.apiHost, path);
     final response=await http.get(uri,headers: {
       'Content-Type':'application/json',
@@ -60,6 +64,25 @@ class CourseService with ChangeNotifier{
       course.courseColor = Color.fromRGBO(random.nextInt(200), random.nextInt(200), random.nextInt(200), 1);
       this.courses.add(course);
     });
+
+    this._isLoading=false;
+    notifyListeners();
+  }
+
+  void testScore(int testId, double score) async {
+    this._isLoading=true;
+    final uri=Uri.http(AppConfig.apiHost, '/api/user/add_score');
+    final response= await http.post(uri, body: {
+      'user_id': '1',
+      'test_id': '$testId',
+      'score': '$score'
+    });
+
+    final dataConvertTof8=jsonDecode(Utf8Codec().decode(response.bodyBytes));
+
+    // if (dataConvertTof8['status'] == 'error') {
+    //   this._error = true;
+    // }
 
     this._isLoading=false;
     notifyListeners();
