@@ -80,7 +80,9 @@ class _LessonsPageState extends State<LessonsPage> {
               child: TabBarView(
                 children: [
                   _lessonsList(course),
-                  _testsList(course)
+                  course.tests.length > 0 ?
+                  _testsList(course):
+                  Container()
                 ],
               ),
             )
@@ -104,7 +106,7 @@ class _LessonsPageState extends State<LessonsPage> {
   Container _testsList(Course course) {
     return Container(
       child: ListView.builder(
-        itemCount: course.lessons.length,
+        itemCount: course.tests.length,
         itemBuilder: (BuildContext context, int i) {
           return _card(context, course.tests[i], course.color, Icons.notes);
         },
@@ -136,10 +138,11 @@ class _LessonsPageState extends State<LessonsPage> {
         onTap: () {
           if (object is Lesson) {
             Provider.of<CourseService>(context, listen: false).currentLesson = object;
-          Navigator.pushNamed(context, 'showlesson');
+            Navigator.pushNamed(context, 'showlesson');
           }
           if(object is Test){
             Provider.of<CourseService>(context,listen: false).currentTest=object;
+            // print(Provider.of<CourseService>(context,listen: false).currentTest);
             Navigator.pushNamed(context, 'test');
             //navegar a la pagina test
           }

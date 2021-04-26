@@ -20,12 +20,12 @@ class _TestPageState extends State<TestPage> {
   List<Answer> li=[];
   @override
   Widget build(BuildContext context) {
-    final currentTest=Provider.of<CourseService>(context).currentTest.id;
-    final courseService=Provider.of<CourseService>(context).currentCourse.tests[int.parse((currentTest))-1];
+    // final currentTests=Provider.of<CourseService>(context).currentTest.id;
+    final currentTest=Provider.of<CourseService>(context).currentTest;
     return Scaffold(
       backgroundColor: Colors.grey[200],
      appBar: AppBar(
-        title: Text("Test", style: TextStyle(color: Colors.blue),) 
+        title: Text("Prueba", style: TextStyle(color: Colors.blue),) 
         ,backgroundColor: Colors.white, 
         elevation: 0.8,
         toolbarHeight: 65,
@@ -37,35 +37,38 @@ class _TestPageState extends State<TestPage> {
           },
         ),
       ),
-      body:Column(
-        children: [
-          Text(courseService.instructions,style: TextStyle(fontSize: 20),),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: courseService.questions.length,
-            itemBuilder: (BuildContext context, int i){
-              li=courseService.questions[i].answers;
-             
-              return Card(
-                margin: EdgeInsets.all(10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  child: ListTile(
-                  title: Text("${i+1}. ${courseService.questions[i].question}"),
-                  subtitle: _cardAnswer(courseService, i),
-                  
-                ),
-              );
-            },
-          ),
-          MaterialButton(
-            child: Container(
-              padding: EdgeInsets.all(10),
-             color: Colors.blue,
-              child: Text("Enviar todo y terminar",style: TextStyle(color: Colors.white),)),
-            onPressed: (){
-              //instruccion para guardar en la bd
-            })
-        ],
+      body:Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          children: [
+            Text(currentTest.instructions,style: TextStyle(fontSize: 20),),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: currentTest.questions.length,
+              itemBuilder: (BuildContext context, int i){
+                li=currentTest.questions[i].answers;
+               
+                return Card(
+                  margin: EdgeInsets.all(10),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    child: ListTile(
+                    title: Text("${i+1}. ${currentTest.questions[i].question}"),
+                    subtitle: _cardAnswer(currentTest, i),
+                    
+                  ),
+                );
+              },
+            ),
+            MaterialButton(
+              child: Container(
+                padding: EdgeInsets.all(10),
+               color: Colors.blue,
+                child: Text("Enviar todo y terminar",style: TextStyle(color: Colors.white),)),
+              onPressed: (){
+                //instruccion para guardar en la bd
+              })
+          ],
+        ),
       )
    );
   }
