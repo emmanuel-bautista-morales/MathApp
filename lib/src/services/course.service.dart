@@ -77,8 +77,9 @@ class CourseService with ChangeNotifier{
       'test_id': '$testId',
       'score': '$score'
     });
+    print(response);
 
-    final dataConvertTof8=jsonDecode(Utf8Codec().decode(response.bodyBytes));
+    // final dataConvertTof8=jsonDecode(Utf8Codec().decode(response.bodyBytes));
 
     // if (dataConvertTof8['status'] == 'error') {
     //   this._error = true;

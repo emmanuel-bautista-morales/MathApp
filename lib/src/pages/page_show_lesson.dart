@@ -3,7 +3,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:mathapp/src/models/lesson.model.dart';
 import 'package:mathapp/src/services/course.service.dart';
-import 'package:mathapp/src/services/experiment.service.dart';
 import 'package:provider/provider.dart';
 
 
@@ -72,7 +71,7 @@ class _ShowLessonPageState extends State<ShowLessonPage> {
   }
 
   Widget _lessonContent(BuildContext context, Lesson lesson) {
-     final experimentService=Provider.of<ExperimentService>(context,listen: true);
+  
     return Expanded(
       child: SingleChildScrollView(
           child: Container(

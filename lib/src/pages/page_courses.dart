@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:mathapp/src/models/course.model.dart';
 import 'package:mathapp/src/services/course.service.dart';
+import 'package:mathapp/src/services/user.service.dart';
+
 import 'package:provider/provider.dart';
 
 
@@ -9,20 +11,29 @@ class CoursesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userService=Provider.of<UserService>(context);
     final coursesService=Provider.of<CourseService>(context);
-   
+    
+     
    
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(color: Colors.black, icon: Icon(Icons.bar_chart_rounded), onPressed: (){
+            Navigator.pushNamed(context, 'progress');
+          })
+        ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             CircleAvatar(
+              
               maxRadius: 15,
               backgroundImage: NetworkImage('https://heraldodemexico.com.mx/u/fotografias/m/2021/3/26/f608x342-344877_374600_0.jpg'),
             ),
+            //  Text(userService.currentUser.username,style: TextStyle(color: Colors.black),),
             SizedBox(width: 10),
-            Icon(Icons.settings, color: Colors.black, size: 30,)
+            Icon(Icons.settings, color: Colors.black, size: 30)
           ],
         ),
         centerTitle: false,
