@@ -51,7 +51,7 @@ class User {
         email: json["email"],
         pwd: json["pwd"],
         answeredTests: List<dynamic>.from(json["answered_tests"].map((x) => x)),
-        lastLesson: json["last_lesson"],
+        lastLesson: json["last_lesson"] != null ? json["last_lesson"].toString(): "",
     );
 
     Map<String, dynamic> toJson() => {

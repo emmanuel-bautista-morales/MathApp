@@ -4,6 +4,7 @@ import 'package:mathapp/src/models/answer.model.dart';
 
 import 'package:mathapp/src/models/test.model.dart';
 import 'package:mathapp/src/services/course.service.dart';
+import 'package:mathapp/src/services/user.service.dart';
 import 'package:provider/provider.dart';
 
 class TestPage extends StatefulWidget {
@@ -22,15 +23,11 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     final loading = Provider.of<CourseService>(context).isLoading;
     final currentTest = Provider.of<CourseService>(context).currentTest;
-    
+
     if (questions.length == 0) {
       currentTest.questions.forEach((q) {
-      questions.add({
-        "id": q.id,
-        "question": q.question,
-        "correct": false
+        questions.add({"id": q.id, "question": q.question, "correct": false});
       });
-    });
     }
 
     return Scaffold(
@@ -96,7 +93,8 @@ class _TestPageState extends State<TestPage> {
                           return;
                         }
                       });
-                      _showConfirmDialog(context, currentTest, loading, questions);
+                      _showConfirmDialog(
+                          context, currentTest, loading, questions);
                     });
                   })
             ],
@@ -104,8 +102,8 @@ class _TestPageState extends State<TestPage> {
         ));
   }
 
-  Future _showConfirmDialog(
-      BuildContext context, Test currentTest, bool isLoading, List<Map<String, dynamic>> questions) {
+  Future _showConfirmDialog(BuildContext context, Test currentTest,
+      bool isLoading, List<Map<String, dynamic>> questions) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -119,9 +117,9 @@ class _TestPageState extends State<TestPage> {
                   child: Text('Aceptar'),
                   onPressed: () {
                     if (testValid) {
-                      int cont =0;
-                      
-                      questions.forEach((q) { 
+                      int cont = 0;
+
+                      questions.forEach((q) {
                         if (q['correct']) {
                           cont++;
                         }
@@ -129,15 +127,15 @@ class _TestPageState extends State<TestPage> {
 
                       final courseProvider =
                           Provider.of<CourseService>(context, listen: false);
-                      courseProvider.testScore(
-                          int.parse(currentTest.id),
-                          ((cont * 100) /
-                              currentTest.questions.length));
-                      _showLoadingDialog(context, isLoading);
-
+                      courseProvider.testScore(int.parse(currentTest.id),
+                          ((cont * 100) / currentTest.questions.length));
+                          final userService = Provider.of<UserService>(context, listen: false);
+                      userService.answeredTest = true;
                       currentTest.questions.forEach((q) {
                         q.answered = false;
                       });
+                      Navigator.of(context).pushReplacementNamed('courses');
+
                       
                     } else {
                       Navigator.of(context).pop();
@@ -154,26 +152,26 @@ class _TestPageState extends State<TestPage> {
 
   Future _showLoadingDialog(BuildContext context, bool isLoading) {
     return showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                (isLoading
-                                    ? CircularProgressIndicator()
-                                    : (Text('Prueba enviada')))
-                              ],
-                            ),
-                            actions: [
-                              MaterialButton(
-                                  child: Text('Aceptar'),
-                                  onPressed: () =>
-                                      Navigator.of(context).pushReplacementNamed('courses'))
-                            ],
-                          );
-                        });
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                (isLoading
+                    ? CircularProgressIndicator()
+                    : (Text('Prueba enviada')))
+              ],
+            ),
+            actions: [
+              MaterialButton(
+                  child: Text('Aceptar'),
+                  onPressed: () =>
+                      Navigator.of(context).pushReplacementNamed('courses'))
+            ],
+          );
+        });
   }
 
   Future _showErrorDialog(BuildContext context) {
@@ -198,7 +196,8 @@ class _TestPageState extends State<TestPage> {
         });
   }
 
-  ListView _cardAnswer(Test currentTest, int i, List<Map<String, dynamic>> questions) {
+  ListView _cardAnswer(
+      Test currentTest, int i, List<Map<String, dynamic>> questions) {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: 1,
@@ -212,7 +211,6 @@ class _TestPageState extends State<TestPage> {
             titles: lista,
             defaultSelected: _index,
             orientation: RGOrientation.VERTICAL,
-
             onChanged: (index) {
               setState(() {
                 currentTest.questions[i].answered = true;

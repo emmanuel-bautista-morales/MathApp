@@ -3,6 +3,7 @@ import 'package:mathapp/src/models/course.model.dart';
 import 'package:mathapp/src/models/lesson.model.dart';
 import 'package:mathapp/src/models/test.model.dart';
 import 'package:mathapp/src/services/course.service.dart';
+import 'package:mathapp/src/services/user.service.dart';
 import 'package:provider/provider.dart';
 
 class LessonsPage extends StatefulWidget {
@@ -16,6 +17,8 @@ class _LessonsPageState extends State<LessonsPage> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final courseService=Provider.of<CourseService>(context);
+    
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -23,7 +26,7 @@ class _LessonsPageState extends State<LessonsPage> {
           SliverList(
             delegate: SliverChildListDelegate([
               Container(
-                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                // margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -92,8 +95,12 @@ class _LessonsPageState extends State<LessonsPage> {
     );
   }
 
-  Container _lessonsList(Course course) {
+  Widget _lessonsList(Course course) {
+    
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+      margin: EdgeInsets.only(bottom: 50),
+      width: double.infinity,
       child: ListView.builder(
         itemCount: course.lessons.length,
         itemBuilder: (BuildContext context, int i) {
@@ -104,17 +111,21 @@ class _LessonsPageState extends State<LessonsPage> {
   }
 
   Container _testsList(Course course) {
+    final userService = Provider.of<UserService>(context, listen: false);
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       child: ListView.builder(
         itemCount: course.tests.length,
         itemBuilder: (BuildContext context, int i) {
-          return _card(context, course.tests[i], course.color, Icons.notes);
+          return _card(context, course.tests[i], course.color, Icons.notes, testLoked: userService.answeredTest);
         },
       ),
     );
   }
 
-  Container _card(BuildContext context, dynamic object, Color color, IconData icon) {
+  Container _card(BuildContext context, dynamic object, Color color, IconData icon, {
+    bool testLoked
+  }) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.only(bottom: 20),
@@ -132,7 +143,19 @@ class _LessonsPageState extends State<LessonsPage> {
       ),
       child: ListTile(
         leading: Icon(icon, size: 40, color: color,),
-        title: Text(object is Lesson ? object.title : 'Test', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+        title: Row(
+          children: [
+            Text(object is Lesson ? object.title : 'Test', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+            object is Test && testLoked
+            ?
+            Text(' (Bloqueada)', style: TextStyle(
+              color: Colors.red,
+              fontSize: 12,
+              fontWeight: FontWeight.bold
+            ),):
+            Text('')
+          ],
+        ),
         trailing: Icon(Icons.chevron_right),
         subtitle: Text(object is Lesson ? object.description : 'Pon a prueba tus conocimientos', overflow: TextOverflow.ellipsis,),
         onTap: () {
@@ -140,11 +163,9 @@ class _LessonsPageState extends State<LessonsPage> {
             Provider.of<CourseService>(context, listen: false).currentLesson = object;
             Navigator.pushNamed(context, 'showlesson');
           }
-          if(object is Test){
+          if(object is Test && !testLoked){
             Provider.of<CourseService>(context,listen: false).currentTest=object;
-            // print(Provider.of<CourseService>(context,listen: false).currentTest);
             Navigator.pushNamed(context, 'test');
-            //navegar a la pagina test
           }
         }
       ),
