@@ -35,7 +35,8 @@ class CoursesPage extends StatelessWidget {
     }
 
     return (coursesService.isLoading || userService.isLoading)
-        ? Scaffold(body: Center(child: CircularProgressIndicator()))
+        ? Scaffold(
+          body: Center(child: CircularProgressIndicator()))
         : Scaffold(
             appBar: _appBar(random, userService),
             body: _body(
@@ -131,6 +132,7 @@ class CoursesPage extends StatelessWidget {
 
   Widget _appBar(math.Random random, UserService userService) {
     return AppBar(
+      automaticallyImplyLeading: false,
       actions: [
         PopupMenuButton(
           child: Center(

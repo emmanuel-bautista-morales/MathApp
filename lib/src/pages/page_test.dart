@@ -15,7 +15,6 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
   bool respuesta;
   List<String> lista = [];
-  int _index = -1;
   List<Answer> li = [];
   bool testValid = true;
   List<Map<String, dynamic>> questions = [];
@@ -64,7 +63,7 @@ class _TestPageState extends State<TestPage> {
                     li = currentTest.questions[i].answers;
 
                     return Card(
-                      margin: EdgeInsets.all(10),
+                      margin: EdgeInsets.only(top: 30),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       child: ListTile(
@@ -134,7 +133,8 @@ class _TestPageState extends State<TestPage> {
                       currentTest.questions.forEach((q) {
                         q.answered = false;
                       });
-                      Navigator.of(context).pushReplacementNamed('courses');
+                      Navigator.pushNamedAndRemoveUntil(context,'courses',(_)=>false);
+                      // Navigator.of(context).pushReplacementNamed('courses');
 
                       
                     } else {
@@ -199,6 +199,7 @@ class _TestPageState extends State<TestPage> {
   ListView _cardAnswer(
       Test currentTest, int i, List<Map<String, dynamic>> questions) {
     return ListView.builder(
+      
       shrinkWrap: true,
       itemCount: 1,
       itemBuilder: (BuildContext context, int index) {
@@ -209,10 +210,11 @@ class _TestPageState extends State<TestPage> {
         });
         return FlutterRadioGroup(
             titles: lista,
-            defaultSelected: _index,
+            defaultSelected: -1,
             orientation: RGOrientation.VERTICAL,
             onChanged: (index) {
               setState(() {
+               
                 currentTest.questions[i].answered = true;
                 if (currentTest.questions[i].answers[index].correct) {
                   questions.forEach((q) {
@@ -229,7 +231,7 @@ class _TestPageState extends State<TestPage> {
                     }
                   });
                 }
-                _index = index;
+                // _index = index;
                 testValid = true;
               });
             });
