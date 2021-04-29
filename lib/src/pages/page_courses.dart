@@ -26,7 +26,6 @@ class CoursesPage extends StatelessWidget {
             lastLesson.title = l.title;
             lastLesson.content = l.content;
             lastLesson.description = l.description;
-            lastLesson.experiments = l.experiments;
             lastLesson.courseId = l.courseId;
           }
           return;

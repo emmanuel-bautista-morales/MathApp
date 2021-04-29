@@ -86,7 +86,14 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: InputDecoration(
               hintText: "Nombre de usuario",
               border: OutlineInputBorder(borderSide: BorderSide.none)),
-          onSaved: (value) => userModel.username = value),
+          onSaved: (value) => userModel.username = value,
+          validator: (value){
+            if(value.isEmpty){
+              return "El campo usuario es obligatorio";
+            }
+          },
+          ),
+
     );
   }
 
@@ -102,6 +109,11 @@ class _RegisterPageState extends State<RegisterPage> {
             hintText: "Correo electrónico",
             border: OutlineInputBorder(borderSide: BorderSide.none)),
         onSaved: (value) => userModel.email = value,
+        validator: (value){
+          if(value.isEmpty){
+            return "El campo email es obligatorio";
+          }
+        },
       ),
     );
   }
@@ -118,6 +130,11 @@ class _RegisterPageState extends State<RegisterPage> {
             labelText: "Contraseña",
             border: OutlineInputBorder(borderSide: BorderSide.none)),
         onSaved: (value) => userModel.pwd = value,
+        validator: (value){
+         if(value.length<8){
+           return "Debe tener mas de 8 caracteres";
+         }
+        },
       ),
     );
   }
@@ -137,17 +154,16 @@ class _RegisterPageState extends State<RegisterPage> {
         )),
       ),
       onTap: () async {
+        if (!formKey.currentState.validate()) return;
         final userService = Provider.of<UserService>(context, listen: false);
         formKey.currentState.save();
         final resp = await userService.createUser(userModel);
-        print(userModel.username);
-        print(resp);
         if (resp == true) {
-          print("si");
-          alerts.dangerAlert(context, 'Correcto',
-              "Usuario registrado correctamente", Icons.add, Colors.green);
+          
+          alerts.loginAlert(context, 'Correcto',
+              "Usuario registrado correctamente", Icons.check, Colors.green);
         } else {
-          print("error");
+         
         }
       },
     );

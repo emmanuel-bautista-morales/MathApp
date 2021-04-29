@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-import 'package:mathapp/src/models/show_experiment.model.dart';
+
 
 LessonModel lessonModelFromJson(String str) => LessonModel.fromJson(json.decode(str));
 
@@ -33,7 +33,7 @@ class Lesson {
         this.title,
         this.content,
         this.courseId,
-        this.experiments,
+      
         this.description
     });
 
@@ -41,7 +41,7 @@ class Lesson {
     String title;
     String content;
     String courseId;
-    List<Experiment> experiments;
+   
     String description;
 
     factory Lesson.fromJson(Map<String, dynamic> json) => Lesson(
@@ -50,7 +50,7 @@ class Lesson {
         content: json["content"],
         courseId: json["course_id"],
         description: json['description'],
-        experiments: json["experiments"] != null ? List<Experiment>.from(json['experiments'].map((e) => Experiment.fromJson(e))) : null
+       
     );
 
     Map<String, dynamic> toJson() => {

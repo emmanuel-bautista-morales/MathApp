@@ -35,7 +35,7 @@ class UserService with ChangeNotifier {
   login(User user) async {
     this._isLoading = true;
     final uri = Uri.http(AppConfig.apiHost, '/api/user/login');
-    final response = await http.post(uri,
+    final response = await http.post(uri, headers: {"Accept":"application/json"},
         body: jsonEncode(
           {'email': user.email, 'pwd': user.pwd},
         ));

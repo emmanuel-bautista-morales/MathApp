@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
           prefs.setBool('logged', true);
           Navigator.pushReplacementNamed(context, 'courses');
         } else {
-          alerts.dangerAlert(
+          alerts.alerts(
               context,
               "Error",
               "Revisa tu email o contraseña e intentalo nuevamente!",
