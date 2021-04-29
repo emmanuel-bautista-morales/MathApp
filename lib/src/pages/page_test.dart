@@ -128,15 +128,16 @@ class _TestPageState extends State<TestPage> {
                           Provider.of<CourseService>(context, listen: false);
                       courseProvider.testScore(int.parse(currentTest.id),
                           ((cont * 100) / currentTest.questions.length));
-                          final userService = Provider.of<UserService>(context, listen: false);
+                      final userService =
+                          Provider.of<UserService>(context, listen: false);
                       userService.answeredTest = true;
                       currentTest.questions.forEach((q) {
                         q.answered = false;
                       });
-                      Navigator.pushNamedAndRemoveUntil(context,'courses',(_)=>false);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, 'courses', (_) => false);
                       // Navigator.of(context).pushReplacementNamed('courses');
 
-                      
                     } else {
                       Navigator.of(context).pop();
                       _showErrorDialog(context);
@@ -196,46 +197,45 @@ class _TestPageState extends State<TestPage> {
         });
   }
 
-  ListView _cardAnswer(
+  Widget _cardAnswer(
       Test currentTest, int i, List<Map<String, dynamic>> questions) {
-    return ListView.builder(
-      
-      shrinkWrap: true,
-      itemCount: 1,
-      itemBuilder: (BuildContext context, int index) {
-        lista = []; //limpiarmos el arreglo
-        li.forEach((element) {
-          //agregamos elementos al array
-          lista.add(element.answer);
-        });
-        return FlutterRadioGroup(
-            titles: lista,
-            defaultSelected: -1,
-            orientation: RGOrientation.VERTICAL,
-            onChanged: (index) {
-              setState(() {
-               
-                currentTest.questions[i].answered = true;
-                if (currentTest.questions[i].answers[index].correct) {
-                  questions.forEach((q) {
-                    if (q['id'] == currentTest.questions[i].id) {
-                      q['correct'] = true;
-                      return;
-                    }
-                  });
-                } else {
-                  questions.forEach((q) {
-                    if (q['id'] == currentTest.questions[i].id) {
-                      q['correct'] = false;
-                      return;
-                    }
-                  });
+    List<Widget> widgets = [];
+
+    lista = []; //limpiarmos el arreglo
+    li.forEach((element) {
+      //agregamos elementos al array
+      lista.add(element.answer);
+    });
+
+    widgets.add(FlutterRadioGroup(
+        titles: lista,
+        defaultSelected: -1,
+        orientation: RGOrientation.VERTICAL,
+        onChanged: (index) {
+          setState(() {
+            currentTest.questions[i].answered = true;
+            if (currentTest.questions[i].answers[index].correct) {
+              questions.forEach((q) {
+                if (q['id'] == currentTest.questions[i].id) {
+                  q['correct'] = true;
+                  return;
                 }
-                // _index = index;
-                testValid = true;
               });
-            });
-      },
+            } else {
+              questions.forEach((q) {
+                if (q['id'] == currentTest.questions[i].id) {
+                  q['correct'] = false;
+                  return;
+                }
+              });
+            }
+            // _index = index;
+            testValid = true;
+          });
+        }));
+
+    return Column(
+      children: widgets,
     );
   }
 }
