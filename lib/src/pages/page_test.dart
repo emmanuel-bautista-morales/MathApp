@@ -121,6 +121,7 @@ class _TestPageState extends State<TestPage> {
             ),
             actions: [
               MaterialButton(
+                color: Colors.blue,
                   child: Text('Aceptar'),
                   onPressed: () {
                     if (testValid) {
@@ -154,6 +155,7 @@ class _TestPageState extends State<TestPage> {
                     }
                   }),
               MaterialButton(
+                color: Colors.red,
                   child: Text('Cancelar'),
                   onPressed: () => Navigator.of(context).pop()),
             ],
@@ -190,16 +192,18 @@ class _TestPageState extends State<TestPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            title: Center(child: Text("Error", style: TextStyle(fontSize: 25,color: Colors.red),)),
             content: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Debe llenar todos los cambos'),
+                Text('Debe contestar todas las preguntas'),
                 Icon(Icons.error, size: 60, color: Colors.red)
               ],
             ),
             actions: [
               MaterialButton(
+               color: Colors.blue,
                   child: Text('Aceptar'),
                   onPressed: () => Navigator.of(context).pop()),
             ],
