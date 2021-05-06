@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: TextFormField(
         obscureText: true,
         decoration: InputDecoration(
-            labelText: "Contraseña",
+            hintText: "Contraseña",
             border: OutlineInputBorder(borderSide: BorderSide.none)),
         onSaved: (value) => userModel.pwd = value,
         validator: (value){

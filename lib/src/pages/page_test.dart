@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_radio_group/flutter_radio_group.dart';
 import 'package:mathapp/src/models/answer.model.dart';
 
 import 'package:mathapp/src/models/test.model.dart';
 import 'package:mathapp/src/services/course.service.dart';
 import 'package:mathapp/src/services/user.service.dart';
+import 'package:mathapp/src/widgets/flutter_radio_group_widget.dart';
 import 'package:provider/provider.dart';
 
 class TestPage extends StatefulWidget {
@@ -33,8 +35,9 @@ class _TestPageState extends State<TestPage> {
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
           title: Text(
-            "Prueba",
+            "Contesta el siguiente test",
             style: TextStyle(color: Colors.blue),
+            overflow: TextOverflow.ellipsis,
           ),
           backgroundColor: Colors.white,
           elevation: 0.8,
@@ -47,57 +50,62 @@ class _TestPageState extends State<TestPage> {
             },
           ),
         ),
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            children: [
-              Text(
-                currentTest.instructions,
-                style: TextStyle(fontSize: 20),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: currentTest.questions.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    li = currentTest.questions[i].answers;
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: currentTest.questions.length,
+                itemBuilder: (BuildContext context, int i) {
+                  li = currentTest.questions[i].answers;
 
-                    return Card(
-                      margin: EdgeInsets.only(top: 30),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: ListTile(
-                        title: Text(
-                            "${i + 1}. ${currentTest.questions[i].question}"),
-                        subtitle: _cardAnswer(currentTest, i, questions),
-                      ),
-                    );
-                  },
-                ),
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 20, top: 10, left: 10, right: 10),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black87
+                        )
+                      ]
+                    ),
+                    child: ListTile(
+                      title: Text(
+                          "${i + 1}. ${currentTest.questions[i].question}"),
+                      subtitle: _cardAnswer(currentTest, i, questions),
+                    ),
+                  );
+                },
               ),
-              MaterialButton(
-                  child: Container(
-                      padding: EdgeInsets.all(10),
+            ),
+            MaterialButton(
+                child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.all(13),
+                    decoration: BoxDecoration(
                       color: Colors.blue,
-                      child: Text(
-                        "Enviar todo y terminar",
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  onPressed: () {
-                    //instruccion para guardar en la bd
-                    setState(() {
-                      currentTest.questions.forEach((q) {
-                        if (!q.answered) {
-                          testValid = false;
-                          return;
-                        }
-                      });
-                      _showConfirmDialog(
-                          context, currentTest, loading, questions);
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      "Enviar todo y terminar",
+                      style: TextStyle(color: Colors.white),
+                    )),
+                onPressed: () {
+                  //instruccion para guardar en la bd
+                  setState(() {
+                    currentTest.questions.forEach((q) {
+                      if (!q.answered) {
+                        testValid = false;
+                        return;
+                      }
                     });
-                  })
-            ],
-          ),
+                    _showConfirmDialog(
+                        context, currentTest, loading, questions);
+                  });
+                })
+          ],
         ));
   }
 

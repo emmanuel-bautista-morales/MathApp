@@ -125,13 +125,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.3"
-  flutter_radio_group:
-    dependency: "direct main"
-    description:
-      name: flutter_radio_group
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   flutter_svg:
     dependency: transitive
     description:
@@ -156,13 +149,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  group_radio_button:
-    dependency: "direct main"
-    description:
-      name: group_radio_button
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   html:
     dependency: transitive
     description:
@@ -268,13 +254,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.0"
-  percent_indicator:
-    dependency: "direct main"
-    description:
-      name: percent_indicator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
   petitparser:
     dependency: transitive
     description:

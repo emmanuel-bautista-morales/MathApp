@@ -144,6 +144,7 @@ class _LoginPageState extends State<LoginPage> {
             color: Color.fromRGBO(220, 220, 220, 0.9),
             borderRadius: BorderRadius.circular(30)),
         child: TextFormField(
+            obscureText: true,
             decoration: InputDecoration(
                 border: OutlineInputBorder(borderSide: BorderSide.none),
                 hintText: 'Contraseña'),
