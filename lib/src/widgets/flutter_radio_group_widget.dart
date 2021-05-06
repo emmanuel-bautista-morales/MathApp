@@ -35,7 +35,7 @@ class FlutterRadioGroup extends StatefulWidget {
 }
 
 /// Set state as Public to access update index radio group
-class FlutterRadioGroupState extends State<FlutterRadioGroup> {
+class FlutterRadioGroupState extends State<FlutterRadioGroup> with AutomaticKeepAliveClientMixin {
   int _defaultValue = 0;
 
   /// Set default selected 0
@@ -160,4 +160,8 @@ class FlutterRadioGroupState extends State<FlutterRadioGroup> {
       if (index < widget.titles.length) _defaultValue = index;
     });
   }
+
+  @override
+  
+  bool get wantKeepAlive => true;
 }

@@ -216,6 +216,7 @@ class _TestPageState extends State<TestPage> {
     });
 
     widgets.add(FlutterRadioGroup(
+      
         titles: lista,
         defaultSelected: -1,
         orientation: RGOrientation.VERTICAL,
