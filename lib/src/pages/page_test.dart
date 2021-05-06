@@ -132,12 +132,14 @@ class _TestPageState extends State<TestPage> {
                         }
                       });
 
+                      final userService =
+                          Provider.of<UserService>(context, listen: false);
+
                       final courseProvider =
                           Provider.of<CourseService>(context, listen: false);
                       courseProvider.testScore(int.parse(currentTest.id),
-                          ((cont * 100) / currentTest.questions.length));
-                      final userService =
-                          Provider.of<UserService>(context, listen: false);
+                          ((cont * 100) / currentTest.questions.length), userService.currentUser.id);
+                      
                       userService.answeredTest = true;
                       currentTest.questions.forEach((q) {
                         q.answered = false;

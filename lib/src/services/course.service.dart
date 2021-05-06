@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:math';
 
@@ -69,11 +67,11 @@ class CourseService with ChangeNotifier{
     notifyListeners();
   }
 
-  void testScore(int testId, double score) async {
+  void testScore(int testId, double score, String userId) async {
     this._isLoading=true;
     final uri=Uri.http(AppConfig.apiHost, '/api/user/add_score');
     final response= await http.post(uri, body: {
-      'user_id': '1',
+      'user_id': '$userId',
       'test_id': '$testId',
       'score': '$score'
     });

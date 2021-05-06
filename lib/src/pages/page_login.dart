@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         if (logged) {
           final userService = Provider.of<UserService>(context, listen: false);
+          user.id = prefs.getString('userId');
           user.email = prefs.getString('email');
           user.pwd = prefs.getString('pwd');
           userService.login(user);
