@@ -121,6 +121,13 @@ class CoursesPage extends StatelessWidget {
                         ),
                         onTap: () {
                           coursesService.currentLesson = lastLesson;
+                          coursesService.courses.forEach((c) {
+                            if (c.id == coursesService.currentLesson.courseId) {
+                              coursesService.currentCourse = c;
+                              return;
+                            }
+                           });
+                          
                           Navigator.pushNamed(context, 'showlesson');
                         }),
                   ),

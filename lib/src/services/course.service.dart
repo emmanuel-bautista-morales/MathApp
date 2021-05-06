@@ -75,7 +75,6 @@ class CourseService with ChangeNotifier{
       'test_id': '$testId',
       'score': '$score'
     });
-    print(response);
 
     // final dataConvertTof8=jsonDecode(Utf8Codec().decode(response.bodyBytes));
 
@@ -87,8 +86,16 @@ class CourseService with ChangeNotifier{
     notifyListeners();
   }
 
-  getQuestions(){
-    
+  setProgress(String userId, String lessonId) async {
+    final uri = Uri.http(AppConfig.apiHost, '/api/progress/create');
+    final response = await http.post(uri,
+        body: jsonEncode(
+            {'user_id': userId, 'lesson_id': lessonId}));
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

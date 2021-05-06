@@ -5,6 +5,7 @@ import 'package:mathapp/src/models/lesson.model.dart';
 import 'package:mathapp/src/services/course.service.dart';
 import 'package:mathapp/src/services/user.service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowLessonPage extends StatefulWidget {
   @override
@@ -13,11 +14,21 @@ class ShowLessonPage extends StatefulWidget {
 
 class _ShowLessonPageState extends State<ShowLessonPage> {
   @override
+  void initState() {
+    super.initState();
+    final courseService = Provider.of<CourseService>(context, listen: false);
+    final userService = Provider.of<UserService>(context, listen: false);
+
+    courseService.setProgress(
+        userService.currentUser.id, courseService.currentLesson.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final courseService = Provider.of<CourseService>(context);
 
     Lesson currentLesson = courseService.currentLesson;
-    final userService = Provider.of<UserService>(context, listen: false);
+    final userService = Provider.of<UserService>(context);
     userService.lastLesson = courseService.currentLesson.id;
 
     return Scaffold(
@@ -44,12 +55,14 @@ class _ShowLessonPageState extends State<ShowLessonPage> {
 
   Container _footer(BuildContext context) {
     final courseService = Provider.of<CourseService>(context, listen: false);
+    final userService = Provider.of<UserService>(context, listen: false);
     final lessons = courseService.currentCourse.lessons;
     Lesson nextLesson = null;
     bool isLastLesson = false;
 
     // identificar la lección siguiente
-    for (var i = 0; i < lessons.length; i++) {
+    if (lessons != null) {
+      for (var i = 0; i < lessons.length; i++) {
       if ((lessons[i].id == courseService.currentLesson.id)) {
         if (i < lessons.length - 1) {
           nextLesson = lessons[i + 1];
@@ -58,6 +71,7 @@ class _ShowLessonPageState extends State<ShowLessonPage> {
           nextLesson = lessons[i];
         }
       }
+    }
     }
 
     return Container(
@@ -68,22 +82,28 @@ class _ShowLessonPageState extends State<ShowLessonPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          MaterialButton(
-              padding: EdgeInsets.all(7),
-              color: Colors.lightBlue[800],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                !isLastLesson ? "Siguiente lección" : "Hacer la prueba",
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () {
-                if (!isLastLesson) {
-                  courseService.currentLesson = nextLesson;
-                  Navigator.pushReplacementNamed(context, 'showlesson');
-                } else {}
-              }),
+          !userService.answeredTest
+              ? MaterialButton(
+                  padding: EdgeInsets.all(7),
+                  color: Colors.lightBlue[800],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    !isLastLesson ? "Siguiente lección" : "Hacer la prueba",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    if (!isLastLesson) {
+                      courseService.currentLesson = nextLesson;
+                      Navigator.pushReplacementNamed(context, 'showlesson');
+                    } else {
+                      Provider.of<CourseService>(context, listen: false)
+                          .currentTest = courseService.currentCourse.tests[0];
+                      Navigator.pushReplacementNamed(context, 'test');
+                    }
+                  })
+              : Container()
         ],
       ),
     );

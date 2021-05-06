@@ -31,6 +31,8 @@ class _LoginPageState extends State<LoginPage> {
           user.id = prefs.getString('userId');
           user.email = prefs.getString('email');
           user.pwd = prefs.getString('pwd');
+          user.lastLesson = prefs.getString('lastLesson');
+          print(user.lastLesson);
           userService.login(user);
           Navigator.pushReplacementNamed(context, 'courses');
         }
@@ -43,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('mostrando login...');
     return Scaffold(
       body: loading
           ? Center(
@@ -134,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
           decoration: InputDecoration(
               border: OutlineInputBorder(borderSide: BorderSide.none),
               hintText: 'Correo electrónico'),
-          onSaved: (value) => user.email = value),
+          onSaved: (value) => user.email = value.trim()),
     );
   }
 
@@ -177,6 +178,7 @@ class _LoginPageState extends State<LoginPage> {
           prefs.setString('email', usuarioService.currentUser.email);
           prefs.setString('pwd', usuarioService.currentUser.pwd);
           prefs.setBool('logged', true);
+          prefs.setString('lastLesson', usuarioService.currentUser.lastLesson);
           Navigator.pushReplacementNamed(context, 'courses');
         } else {
           alerts.alerts(

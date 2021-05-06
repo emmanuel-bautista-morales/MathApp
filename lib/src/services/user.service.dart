@@ -61,8 +61,6 @@ class UserService with ChangeNotifier {
     final response = await http.post(uri,
         body: jsonEncode(
             {'username': user.username, 'email': user.email, 'pwd': user.pwd}));
-    print(response);
-    print(response.statusCode);
     if (response.statusCode == 200) {
       return true;
     } else {
